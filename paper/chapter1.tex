@@ -1,0 +1,52 @@
+% ------------------------------------------------------------------------------
+% Chapter 1
+% Delete this content and replace with your own
+% ------------------------------------------------------------------------------
+\chapter{Problem Taxonomy} % enter the name of the chapter here
+\label{Problem} % enter the chapter label here (for cross referencing)
+
+\section{Problem Statement} % enter the name of the section here
+\label{Problem Statement} % enter the section label here (for cross referencing)
+
+The problem necessitates us to perform two broad tasks. First, we need to create a dashboard which monitors real time data and refreshes its queries on demand. Second, we need to support a set of functions which can efficiently display the data on the dashboard in an intuitive manner via graphical tools and widgets. The specific scenario is marketer, where the user should perform market analysis on a very large database of product reviews to make better business decisions.
+
+In a rudimentary model, new updates are handled by naively re-querying the entire database, filtering the resultant tuples, applying appropriate aggregate functions and displaying the results in the dashboard. Since continuously re-querying large databases is prohibitively expensive, our survey aims to find literature on similar problems and solutions to optimize the pipeline for a reduced data-to-query lag.
+
+\section{Taxonomy}
+\label{Taxonomy}
+It is important to break down the problem into subtopics that deserve to be focused on individually simply because of their potential in contributing to the overall performance. First, we need to develop an intuitive and interactive data interface to display significant amounts of aggregate data. However, in order to minimize data-to-query lag, further optimizations are necessary. Indexing and query processing are critical components in query optimization. Each use case is different, so it is necessary to determine the optimal indexing and execution plan for our specific scenario. Finally, as memory technology develops, it is becoming increasingly possible to cache and store databases entirely in main memory. Although it is impossible to store large databases in main memory, bringing relevant data into cache will likely result in significant performance benefits.
+
+Therefore, we can classify the taxonomy as follows:
+\begin{itemize}
+    \item Indexing
+    \item Query Processing
+    \item Caching
+    \item Data Interface
+\end{itemize}
+
+Splitting the taxonomy into separate sections lets us explore the different problem parts concurrently and makes the entire project pipeline faster. Each independent research area has a significant a volume of literature survey and techniques which address a variety of problems. It is important find relevant work in each sub-domain and determine which approaches are complementary/improve the overall performance of the project.
+
+\subsection{Indexing}
+A database index is a data structure that improves the speed of data retrieval operations on a database table at the cost of additional writes and storage space to maintain the index data structure. Indexes are used to quickly locate data without having to search every row in a database table every time a database table is accessed. Indexes can be created using one or more columns of a database table, providing the basis for both rapid random look-ups and efficient access of ordered records\cite{Indexing}. 
+
+Dashboard updates heavily depend on frequent concurrent database accesses. A well-formed index can significantly reduce the number of excess I/O operations, thereby resulting in a quicker search and retrieval of data to users. In general, indexes improve performance in SELECT queries while slowing down INSERT, UPDATE, and DELETE operations.\cite{IndexingFundamentals}
+
+Current literature explores multiple different indexing techniques, each with its own benefits and trade-offs. The dashboard updates depend heavily on frequent reads into the database; therefore, we optimize specifically for database accesses. The additional costs in INSERT and UPDATE queries are of minimal importance.
+
+\subsection{Query Processing}
+Query processing is the process which transforms a high-level query into an equivalent, correct, and efficient execution plan expressed in a low-level language. It typically involves interpreting the query, searching through the space storing data, and retrieving corresponding results. Query processing is responsible for transforming the query into a set of efficient queries by reducing redundant calls to the database, minimizing unnecessary joins, and determining an optimal query path.\cite{QueryProcessing} It is important that the correctness of queries is not compromised when we try to optimize query paths. Traditionally, the step includes dynamic programming heuristics or a brute force searches.
+
+Since the data is relatively large, it is important to optimize queries to eliminate redundant calls to the database. In large-scale database systems, it is extremely prohibitive to continuously execute complex queries without regards for performance. Our workload consists of relatively simple aggregate queries without complex joins. It continuously computes a pre-defined set of queries. Therefore, most of our research is oriented around delta queries and incremental view maintenance instead of lower-level details such as the parser, optimizer, and execution engine.
+
+\subsection{Caching}
+Caching helps us make better use of resources by taking advantage of locality of reference principle and also use the vast in-memory volume available in modern systems. Caches are used in every layer of computing - operating systems, web browsers, web applications, database etc. There are three different kinds of caches - write back cache, write through cache and write around cache. A database cache supplements the primary database by removing unnecessary pressure, typically in the form of frequently accessed read data. 
+
+Dashboard updates heavily depend on frequent concurrent database accesses. Since memory is orders of magnitude faster than disk, caches can help significantly reduce read-access queries. However, due to the nature and scale of the data, it is difficult to determine an effective caching solution while maintaining data integrity. We aim to build our model in a way to also support distributed caching in the future for big-data models\cite{Caching} for scalability purposes. Caching enables us access data faster, which in turn increases query efficiency. 
+
+\subsection{Data Interface}
+Data interfaces provide visibility in the data by aggregating and extracting values from the data warehouse. It provides a comprehensive overview of snapshots in time, allowing users to identify key metrics and trends relevant to the information in question. Data interfaces typically consist of a collection of graphical widgets. Widgets can either be refreshed automatically or manually. User interactivity facilitates better user experience \cite{DirectManipulation}; therefore it is important to research not only effective ways to display data but also methods of interaction. A data interface should effectively represent the underlying data while minimizing the number of external database queries. Since new data is constantly incoming, the representation needs to be user-friendly and legible to take advantage of the aforementioned optimizations.
+
+\section{Existing Work}
+The individual entities in the problem taxonomy have been studied extensively. We initially used survey papers\cite{Indexing}\cite{QueryProcessing}\cite{Caching}\cite{VisualizationTechniques} to review the existing work and respective target areas within these fields. In accordance to our problem scenario, we mainly surveyed papers in the big-data domain. We aim to combine these entities to address our use case while ensuring the individual optimizations complement each other. 
+
+There is limited work detailing the combination of multiple areas. Current research aims to hyper-optimize each individual section, tailoring it for a specific use case. We aim to propose an end-to-end optimized pipeline for analyzing large-scale aggregate data. We take an extra effort to optimize our pipeline for marketers, the primary case of interest in our work.

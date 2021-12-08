@@ -1,0 +1,36 @@
+.reviews {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+
+    .reviews-header {
+        display: flex;
+        align-items: stretch;
+
+        .select {
+            width: 95%;
+        }
+    
+        .refresh-button {
+            font-size: 1em;
+            font-weight: bold;
+            width: 5%;
+        }
+    }
+
+    .reviews-container {
+        display: flex;
+        height: 100%;
+
+        .list {
+            flex: 50%;
+            height: 100%;
+            justify-content: center;
+
+            .content {
+                overflow-y: scroll;
+            }
+        }
+    }
+}

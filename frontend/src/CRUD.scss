@@ -1,0 +1,35 @@
+.crud {
+    height: 100%;
+    padding: 1em;
+    text-align: center;
+
+    .reset {
+        align-items: center;;
+        display: flex;
+        font-size: 1em;
+        height: 5%;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .crud-table {
+        height: 100%;
+        width: 100%;
+
+        .row {
+            display: flex;
+            height: 5%;
+            margin: auto;
+            width: 100%;
+
+            .ingest {
+                align-items: center;;
+                display: flex;
+                font-size: 1em;
+                height: 100%;
+                justify-content: center;
+                width: 50%;
+            }
+        }
+    }
+}
